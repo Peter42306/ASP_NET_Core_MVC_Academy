@@ -12,11 +12,23 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
         {
             _context = context;
         }
-
-        // GET: Academy
+        //=============================================================================================
+        // GET: Academy/Index
         public async Task< IActionResult> Index()
         {
             return View(await _context.Academies.ToListAsync());
         }
+        //=============================================================================================        
+        // GET: Academy/Details
+        // POST: Academy/Details
+        //=============================================================================================        
+        // GET: Academy/Create
+        // POST: Academy/Create
+        //=============================================================================================        
+        // GET: Academy/Edit
+        // POST: Academy/Edit
+        //=============================================================================================        
+        // GET: Academy/Edit
+        // POST: Academy/Edit
     }
 }
