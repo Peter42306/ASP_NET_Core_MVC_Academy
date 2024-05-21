@@ -6,13 +6,13 @@
 }
 
 <h1>Index</h1>
-<h2>Student/Index</h2>
+<h5>Route -> Students/Index</h5>
 
 <p>
-	<a asp-action="Create">Create New</a>
+	<a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 
-<table class="table">
+<table class="table table-striped">
 	<thead>
 		<tr>
 			<th>@Html.DisplayNameFor(model => model.Name)</th>
@@ -28,9 +28,9 @@
 				<td>@Html.DisplayFor(modelItem => item.Age)</td>
 				<td>@Html.DisplayFor(modelItem => item.EMail)</td>
 				<td>
-					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-					<a asp-action="Details" asp-route-id="@item.Id">Details</a>
-					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+					<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+					<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+					<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-primary">Delete</a>
 				</td>
 			</tr>
 		}

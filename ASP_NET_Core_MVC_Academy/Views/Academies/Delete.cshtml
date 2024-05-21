@@ -1,0 +1,35 @@
+﻿@model ASP_NET_Core_MVC_Academy.Models.Academy
+
+@{
+	ViewData["Title"] = "Delete";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete</h1>
+<h5>Route -> Academy/Delete</h5>
+
+<h3>Уверены, что хотите удалить?</h3>
+<div>
+	<h5>Академии</h5>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Name)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Name)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.EMail)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.EMail)
+		</dd>		
+	</dl>
+
+	<form asp-action="Delete">
+		<input type="hidden" asp-for="Id" />
+		<input type="submit" value="Delete" class="btn btn-danger" />
+		<a asp-action="Index" class="btn btn-primary">Back to Academies' List</a>
+	</form>
+</div>
