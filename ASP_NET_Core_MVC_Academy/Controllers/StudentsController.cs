@@ -13,16 +13,18 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
         {
             _context = context;
         }
-        //=============================================================
-        // GET: Student/Index
-        public async Task<IActionResult> Index()
+		//=============================================================
+		// GET: Student/Index
+		// Метод для отображения списка студентов
+		public async Task<IActionResult> Index()
         {
             var academyContext = _context.Students.Include(s => s.Group);
             return View(await _context.Students.ToListAsync());
         }
-        //=============================================================
-        // GET: Student/Details
-        public async Task<IActionResult> Details(int? id)
+		//=============================================================
+		// GET: Student/Details
+		// Метод для отображения деталей студента
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Students==null)
             {
@@ -38,20 +40,35 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
 
             return View(student);
         }
-        //=============================================================
-        // GET: Student/Create
-        public IActionResult Create()
+		//=============================================================
+		// GET: Student/Create
+		// Метод для отображения формы создания нового студента
+		public IActionResult Create()
         {
             ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Name");
             return View();
         }
-		
+
 		// POST: Student/Create
+		// Метод для обработки данных формы создания нового студента
 		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Age,EMail,GroupId")] Student student)
         {
-            if (ModelState.IsValid)
+			// Проверка на существование студента с таким же именем в базе данных
+			if (_context.Students.Any(s=>s.Name==student.Name))
+            {
+                ModelState.AddModelError("Name", "Студент с таким именем уже существует");
+            }
+
+			// Проверка на существование студента с таким же e-mail в базе данных
+			if (_context.Students.Any(s => s.EMail == student.EMail))
+			{
+				ModelState.AddModelError("EMail", "Студент с таким e-mail уже существует");
+			}
+
+			// Если модель проходит валидацию, сохраняем студента в базе данных
+			if (ModelState.IsValid)
             {
                 _context.Add(student);
                 await _context.SaveChangesAsync();
@@ -73,9 +90,10 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
             //    return RedirectToAction(nameof(Index));
             //}
         }
-        //=============================================================
-        // GET: Student/Edit
-        public async Task<IActionResult>Edit(int? id)
+		//=============================================================
+		// GET: Student/Edit
+		// Метод для отображения формы редактирования студента
+		public async Task<IActionResult>Edit(int? id)
         {
             if (id==null || _context.Students==null)
             {
@@ -94,8 +112,9 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
             return View(student);
         }
 
-        // POST: Student/Edit
-        [HttpPost]
+		// Метод для обработки данных формы редактирования студента
+		// POST: Student/Edit
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Age,EMail,GroupId")] Student student)
         {
@@ -122,9 +141,10 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
             }
 			return RedirectToAction(nameof(Index));
 		}
-        //=============================================================
-        // GET: Student/Delete
-        public async Task <IActionResult> Delete(int? id)
+		//=============================================================
+		// GET: Student/Delete
+		// Метод для отображения формы удаления студента
+		public async Task <IActionResult> Delete(int? id)
         {
             if (id==null || _context.Students==null)
             {
@@ -139,9 +159,10 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
             }
 
             return View(student);
-        }        	
+        }
 
 		// POST: Student/Delete
+		// Метод для обработки данных формы удаления студента
 		[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult>DeleteConfirmed(int id)
@@ -165,9 +186,10 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
             
             return RedirectToAction(nameof(Index));
         }
-        //=============================================================
-        // Student Exists
-        private bool StudentExists(int id)
+		//=============================================================
+		// Student Exists
+		// Метод для проверки существования студента по его id
+		private bool StudentExists(int id)
         {
             return (_context.Students?.Any(s => s.Id == id)).GetValueOrDefault();
         }

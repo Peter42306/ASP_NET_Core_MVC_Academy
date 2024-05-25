@@ -1,4 +1,6 @@
-﻿namespace ASP_NET_Core_MVC_Academy.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ASP_NET_Core_MVC_Academy.Models
 {
     public class Group
     {
@@ -8,14 +10,33 @@
             this.Students = new HashSet<Student>();
         }
 
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Teacher { get; set; }
-        public string? EMail { get; set; }
+		// Идентификатор студента
+		public int Id { get; set; }
 
-        public int AcademyId { get; set; } // внешний ключ для связи с академией, к которой принадлежит данная группа
-        public Academy? Academy { get; set; } // свойство для доступа к академии, к которой принадлежит группа, группа может быть привязана только к одной академии
+		// Название группы
+		[Required(ErrorMessage = "Запишите название группы")] // Обязательное поле
+		[Display(Name = "Название группы")] // Отображаемое имя поля
+		public string? Name { get; set; }
 
-        public ICollection<Student> Students { get; set; } // коллекция студентов, принадлежащих к данной группе
+		// Имя и фамилия ведущего преподавателя группы
+		[Required(ErrorMessage = "Запишите имя и фамилию ведущего преподавателя группы")] // Обязательное поле
+		[Display(Name = "Имя и фамилия ведущего преподавателя группы")] // Отображаемое имя поля
+		public string? Teacher { get; set; }
+
+		// E-mail группы
+		[Required(ErrorMessage = "Запишите e-mail группы")] // Обязательное поле
+		[Display(Name = "E-mail группы")] // Отображаемое имя поля
+		[EmailAddress] // Валидация формата email
+		public string? EMail { get; set; }
+
+		// внешний ключ для связи с академией, к которой принадлежит данная группа
+		[Display(Name = "К какой академии относится группа")] // Обязательное поле
+		public int AcademyId { get; set; }
+
+		// свойство для доступа к академии, к которой принадлежит группа, группа может быть привязана только к одной академии
+		public Academy? Academy { get; set; }
+
+		// коллекция студентов, принадлежащих к данной группе
+		public ICollection<Student> Students { get; set; } 
     }
 }

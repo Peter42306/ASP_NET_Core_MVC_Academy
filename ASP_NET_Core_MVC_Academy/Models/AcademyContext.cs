@@ -37,13 +37,14 @@ namespace ASP_NET_Core_MVC_Academy.Models
 
 			for (int i = 1; i <= academyNumber; i++)
 			{
-				modelBuilder.Entity<Academy>().HasData(new Academy { Id = academyId, Name = $"Академия {i}", EMail = $"emailAcademy_{i}.gmail" });
+				modelBuilder.Entity<Academy>().HasData(new Academy { Id = academyId, Name = $"Academy {i}", EMail = $"academy_{i}@.gmail" });
 
 				groupPerAcademy = random.Next(groupsPerAcademyMin, groupsPerAcademyMax);
 				
 				for (int j = 1; j <= groupPerAcademy; j++)
 				{
-					modelBuilder.Entity<Group>().HasData(new Group { Id = groupId, Name = $"Группа {i}-{j}", Teacher = $"Учитель {groupId}", EMail = $"emailAcademy_{i}_Group_{i}-{j}.gmail.com", AcademyId = academyId });
+					//modelBuilder.Entity<Group>().HasData(new Group { Id = groupId, Name = $"Group {i}-{j}", Teacher = $"Teacher {groupId}", EMail = $"academy_{i}_Group_{i}-{j}@.gmail.com", AcademyId = academyId });
+					modelBuilder.Entity<Group>().HasData(new Group { Id = groupId, Name = $"Group {i}-{j}", Teacher = $"Teacher {groupId}", EMail = $"academy_{i}_Group_{i}-{j}@.gmail.com", AcademyId = academyId });
 
 					studentsPerGroup = random.Next(studentsPerGroupMin, studentsPerGroupMax);
 
@@ -51,7 +52,8 @@ namespace ASP_NET_Core_MVC_Academy.Models
 					{
 						studentAge = random.Next(studentAgeMin, studentAgeMax);
 
-						modelBuilder.Entity<Student>().HasData(new Student { Id = studentId, Name = $"Student {studentId}", Age = studentAge, EMail = $"emailAcademy_{i}_Group_{i}-{j}_Student_{studentId}.gmail.com", GroupId = groupId });
+						//modelBuilder.Entity<Student>().HasData(new Student { Id = studentId, Name = $"Student {studentId}", Age = studentAge, EMail = $"academy_{i}_group_{i}-{j}_student_{studentId}@.gmail.com", GroupId = groupId });
+						modelBuilder.Entity<Student>().HasData(new Student { Id = studentId, Name = $"Student {studentId}", Age = studentAge, EMail = $"student_{studentId}@.gmail.com", GroupId = groupId });
 
 						studentId++;
 					}

@@ -13,15 +13,17 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
         {
             _context = context;
         }
-        //=============================================================
-        // GET: Group/Index
-        public async Task<IActionResult> Index()
+		//=============================================================
+		// GET: Group/Index
+		// Возвращает представление со списком всех групп
+		public async Task<IActionResult> Index()
         {
             return View( await _context.Groups.ToListAsync());
         }
-        //=============================================================
-        // GET: Group/Details
-        public async Task<IActionResult>Details(int? id)
+		//=============================================================
+		// GET: Group/Details
+		// Возвращает представление с информацией о конкретной группе
+		public async Task<IActionResult>Details(int? id)
         {
             if (id == null || _context.Groups==null)
             {
@@ -37,10 +39,11 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
 
             return View(group);
         }
-                
-        //=============================================================
-        // GET: Group/Create
-        public IActionResult Create()
+
+		//=============================================================
+		// GET: Group/Create
+		// Возвращает представление для создания новой группы
+		public IActionResult Create()
         {
             ViewData["AcademyId"] = new SelectList(_context.Academies, "Id", "Name");
             return View();
@@ -51,7 +54,19 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Teacher,EMail,AcademyId")] Group group)
         {
-            if (ModelState.IsValid)
+			// Проверка на существование группы с таким же названием в базе данных
+			if (_context.Groups.Any(g => g.Name == group.Name))
+			{
+				ModelState.AddModelError("Name", "Группа с таким названием уже существует");
+			}
+
+			// Проверка на существование e-mail с таким же именем в базе данных
+			if (_context.Groups.Any(g => g.EMail == group.EMail))
+			{
+				ModelState.AddModelError("EMail", "Группа с таким e-mail уже существует");
+			}
+
+			if (ModelState.IsValid)
             {
                 _context.Add(group);
                 await _context.SaveChangesAsync();
@@ -64,6 +79,7 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
 
 		//=============================================================
 		// GET: Group/Edit
+		// Возвращает представление для редактирования информации о группе
 		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null || _context.Groups== null)
@@ -83,8 +99,9 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
 			return View(group);
 		}
 
-        // POST: Group/Edit
-        [HttpPost]
+		// POST: Group/Edit
+		// Принимает отредактированные данные о группе, обновляет информацию в базе данных и перенаправляет на страницу списка групп
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Teacher,EMail,AcademyId")] Group group)
         {
@@ -112,9 +129,10 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //=============================================================
-        // GET: Group/Delete
-        public async Task<IActionResult>Delete(int? id)
+		//=============================================================
+		// GET: Group/Delete
+		// Возвращает представление для подтверждения удаления группы
+		public async Task<IActionResult>Delete(int? id)
         {
             if (id ==null || _context.Groups==null)
             {
@@ -131,6 +149,7 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
             return View(group);
         }
 		// POST: Group/Delete
+		// Удаляет группу из базы данных и перенаправляет на страницу списка групп
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
@@ -156,7 +175,8 @@ namespace ASP_NET_Core_MVC_Academy.Controllers
 		}
 		//=============================================================
 		// Group Exists
-        private bool GroupExists(int id)
+		// Проверяет, существует ли группа с указанным идентификатором
+		private bool GroupExists(int id)
         {
             return (_context.Groups?.Any(g => g.Id == id)).GetValueOrDefault();
         }
